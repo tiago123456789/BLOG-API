@@ -8,3 +8,5 @@ const articleSchema = new mongoose.Schema({
     tags: { type: [String] },
     comments: { type: [String] }
 });
+
+export default mongoose.model("article", articleSchema);
