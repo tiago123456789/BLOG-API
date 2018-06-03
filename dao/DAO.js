@@ -1,3 +1,4 @@
+
 class DAO {
 
     constructor(dao) {
@@ -16,12 +17,12 @@ class DAO {
         return await this._dao.find({});
     }
 
-    delete(id) {
-        this._dao.findByIdAndDelete(id);
+    async delete(id) {
+        await this._dao.findByIdAndRemove(id);
     }
 
-    update(id, dataModified) {
-        this._dao.updateOne({ _id: id }, { $set: dataModified });
+    async update(id, dataModified) {
+        await this._dao.findOneAndUpdate({ _id: id }, dataModified);
     }
 
     getDAO() {

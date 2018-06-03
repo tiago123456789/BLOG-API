@@ -7,8 +7,10 @@ export default class TagBO {
         this._tagDAO = dao;
     }
 
-    save(newTag) {
-        if(this._existTagWithName(newTag.name)) {
+    async save(newTag) {
+        const existTag = await this._existTagWithName(newTag.name)
+        
+        if(existTag) {
             throw new NegotiationException("Already exists this tag!");
         }
 
@@ -30,24 +32,17 @@ export default class TagBO {
     }
 
     async delete(id) {
-        try {
-            await this.findById(id);
-            this._tagDAO.delete(id);
-        } catch(e) {
-            console.log(e);
-        }
-        
+        await this.findById(id);
+        await this._tagDAO.delete(id);
     }
 
     async update(id, dataModified) {
-        console.log(id),
-        console.log(dataModified);
         await this.findById(id)
         this._tagDAO.update(id, dataModified);
     }
 
     async _existTagWithName(name) {
         const tagReturned = await this._tagDAO.findByName(name);
-        return tagReturned != null;
+        return tagReturned;
     }
 }

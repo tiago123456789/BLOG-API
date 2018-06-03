@@ -8,6 +8,8 @@ export default (app) => {
 
     app.use((error, request, response, next) => {
         switch(error.code) {
+            case "NOT_FOUND":
+                return response.status(404).json({ msg: error.message });
             case "NEGOTIATION":
                 return response.status(409).json({ msg: error.message });
             default:
