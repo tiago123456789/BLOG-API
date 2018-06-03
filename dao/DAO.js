@@ -21,7 +21,11 @@ class DAO {
     }
 
     update(id, dataModified) {
-        this._dao.findByIdAndUpdate(id, dataModified);
+        this._dao.updateOne({ _id: id }, { $set: dataModified });
+    }
+
+    getDAO() {
+        return this._dao;
     }
 }
 

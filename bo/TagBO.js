@@ -1,4 +1,5 @@
 import NotFoundException from "./../exception/NotFoundException";
+import NegotiationException from "./../exception/NegotiationException";
 
 export default class TagBO {
 
@@ -7,7 +8,11 @@ export default class TagBO {
     }
 
     save(newTag) {
-        this._tagDAO.create(newTag);
+        if(this._existTagWithName(newTag.name)) {
+            throw new NegotiationException("Already exists this tag!");
+        }
+
+        this._tagDAO.save(newTag);
     }
 
     async findById(id) {
@@ -35,7 +40,14 @@ export default class TagBO {
     }
 
     async update(id, dataModified) {
+        console.log(id),
+        console.log(dataModified);
         await this.findById(id)
         this._tagDAO.update(id, dataModified);
+    }
+
+    async _existTagWithName(name) {
+        const tagReturned = await this._tagDAO.findByName(name);
+        return tagReturned != null;
     }
 }

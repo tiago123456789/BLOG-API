@@ -20,8 +20,8 @@ export default class TagEndpoint {
     async save(request, response, next) {
         try {
             const newTag = request.body;
-            const result = await tagDAO.create(newTag);
-            response.json(result);
+            await this._tagBO.save(newTag);
+            response.sendStatus(201);
         } catch (e) {
             next(e);
         }
