@@ -1,5 +1,5 @@
 import DAO from "./DAO";
-import TagCollection from "./../collections/Tag";
+import TagCollection from "../collections/Tag";
 
 class TagDAO extends DAO {
     

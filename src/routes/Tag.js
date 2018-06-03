@@ -1,6 +1,6 @@
-import TagDAO from "./../dao/TagDAO";
-import TagBO from "./../bo/TagBO";
-import TagEndpoint from "./../endpoint/TagEndpoint";
+import TagDAO from "../dao/TagDAO";
+import TagBO from "../bo/TagBO";
+import TagEndpoint from "../endpoint/TagEndpoint";
 
 const tagDAO = new TagDAO();
 const tagBO = new TagBO(tagDAO);

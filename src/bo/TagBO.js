@@ -1,5 +1,5 @@
-import NotFoundException from "./../exception/NotFoundException";
-import NegotiationException from "./../exception/NegotiationException";
+import NotFoundException from "../exception/NotFoundException";
+import NegotiationException from "../exception/NegotiationException";
 
 export default class TagBO {
 
