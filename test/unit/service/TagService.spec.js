@@ -5,10 +5,7 @@ import TagBO from "./../../../src/bo/TagBO";
 const instanceTagBO = (dao) => new TagBO(dao);
 
 describe("Suited test TagService", () => {
-
-    const tagFake = {
-        name: "Tag fake"
-    }
+    const tagFake = { name: "Tag fake" };
 
     afterEach(() => {
         sinon.restore();
@@ -94,8 +91,6 @@ describe("Suited test TagService", () => {
         chai.assert(daoFake.update.calledOnce);
     });
 
-
-
     it("Should trigger exception if tag not found to the called method update tag", async () => {
         const idTagFake = 1;
         const tagFake = {
@@ -117,6 +112,55 @@ describe("Suited test TagService", () => {
         }
     });
 
+    it("Should returned tag to the called method findById", async () => {
+        const idTagFake = 1;
+        const tagFake = {
+            name: "Tag fake"
+        };
 
+        const daoFake = {
+            findById: sinon.stub()
+        };
+
+        daoFake.findById.withArgs(idTagFake).returns(tagFake);
+        const tagBO = instanceTagBO(daoFake);
+        const tagReturned = await tagBO.findById(idTagFake);
+        chai.expect(tagReturned.name).to.be.equal(tagFake.name);
+    });
+
+    it("Should returned tag to the called method findById", async () => {
+        const idTagFake = 1;
+        const tagFake = {
+            name: "Tag fake"
+        };
+
+        const daoFake = {
+            findById: sinon.stub()
+        };
+
+        daoFake.findById.withArgs(idTagFake).returns(tagFake);
+        const tagBO = instanceTagBO(daoFake);
+        const tagReturned = await tagBO.findById(idTagFake);
+        chai.expect(tagReturned.name).to.be.equal(tagFake.name);
+    });
+
+    it("Should trigger exception to the called method findById and tag not found", async () => {
+        const idTagFake = 1;
+        const tagFake = {
+            name: "Tag fake"
+        };
+
+        const daoFake = {
+            findById: sinon.stub()
+        };
+
+        daoFake.findById.withArgs(idTagFake).returns(null);
+        const tagBO = instanceTagBO(daoFake);
+        try {
+            const tagReturned = await tagBO.findById(idTagFake);
+        } catch(e) {
+            chai.expect(e.code).to.be.equal("NOT_FOUND");
+        }
+    })
 
 });
