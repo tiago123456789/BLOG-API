@@ -25,7 +25,6 @@ describe("Suited test TagService", () => {
         await tagService.save(tagFake);
 
         chai.assert(dao.save.calledOnce);
-        sinon.restore();
     });
 
     it("Should deleted tag", async () => {
@@ -47,13 +46,13 @@ describe("Suited test TagService", () => {
             findById: sinon.stub(),
             delete: sinon.spy()
         };
-        
+
         daoFake.findById.withArgs(idTagFake).returns(null);
         const tagBo = instanceTagBO(daoFake);
 
         try {
             await tagBo.delete(idTagFake);
-        } catch(e) {
+        } catch (e) {
             chai.expect(e.code).to.be.equal("NOT_FOUND");
             chai.assert(daoFake.delete.notCalled);
         }
@@ -67,7 +66,7 @@ describe("Suited test TagService", () => {
         const tagsFake = [
             { name: "Tag fake 1" },
             { name: "Tag fake 2" },
-            { name: "Tag fake 3" },            
+            { name: "Tag fake 3" },
         ]
 
         daoFake.findAll.withArgs().returns(tagsFake);
@@ -75,5 +74,49 @@ describe("Suited test TagService", () => {
         const tagBO = instanceTagBO(daoFake);
         const tagsReturned = await tagBO.findAll();
         chai.expect(tagsReturned.length).to.equal(tagsFake.length);
-    })
+    });
+
+    it("Should called method update to the updated tag", async () => {
+        const idTagFake = 1;
+        const tagFake = {
+            name: "Tag fake"
+        };
+
+        const daoFake = {
+            findById: sinon.stub(),
+            update: sinon.spy()
+        };
+
+        daoFake.findById.withArgs(idTagFake).returns(tagFake);
+        const tagBO = instanceTagBO(daoFake);
+
+        await tagBO.update(idTagFake, tagFake);
+        chai.assert(daoFake.update.calledOnce);
+    });
+
+
+
+    it("Should trigger exception if tag not found to the called method update tag", async () => {
+        const idTagFake = 1;
+        const tagFake = {
+            name: "Tag fake"
+        };
+
+        const daoFake = {
+            findById: sinon.stub(),
+            update: sinon.spy()
+        };
+
+        daoFake.findById.withArgs(idTagFake).returns(null);
+        const tagBO = instanceTagBO(daoFake);
+
+        try {
+            await tagBO.update(idTagFake, tagFake);
+        } catch(e) {
+            chai.expect(e.code).to.be.equal("NOT_FOUND");
+        }
+    });
+
+
+
 });
