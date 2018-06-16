@@ -1,0 +1,23 @@
+language: node_js
+
+# SETTING VERSION NODEJS.
+node_js: 
+  - 9.9.0
+
+# SETTING DIRECTORIES CACHED.
+cache:
+  directories:
+    - node_modules
+
+# SETTING BRANCH RUNNING TRAVIS CI.
+branch:
+  only:
+    - master
+
+# SETTING NOTIFICATIONS
+notifications:
+  email:
+    recipients:
+      - tiagorosadacost@gmail.com
+    on_success: always
+    on_failure: always
