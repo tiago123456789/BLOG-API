@@ -58,4 +58,22 @@ describe("Suited test TagService", () => {
             chai.assert(daoFake.delete.notCalled);
         }
     });
+
+    it("Should search all tags", async () => {
+        const daoFake = {
+            findAll: sinon.stub()
+        };
+
+        const tagsFake = [
+            { name: "Tag fake 1" },
+            { name: "Tag fake 2" },
+            { name: "Tag fake 3" },            
+        ]
+
+        daoFake.findAll.withArgs().returns(tagsFake);
+
+        const tagBO = instanceTagBO(dao);
+        const tagsReturned = await tagBO.findAll();
+        chai.expect(tagsReturned).to.equal(tagsFake.length);
+    })
 });
