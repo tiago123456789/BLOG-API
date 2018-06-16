@@ -72,8 +72,8 @@ describe("Suited test TagService", () => {
 
         daoFake.findAll.withArgs().returns(tagsFake);
 
-        const tagBO = instanceTagBO(dao);
+        const tagBO = instanceTagBO(daoFake);
         const tagsReturned = await tagBO.findAll();
-        chai.expect(tagsReturned).to.equal(tagsFake.length);
+        chai.expect(tagsReturned.length).to.equal(tagsFake.length);
     })
 });
