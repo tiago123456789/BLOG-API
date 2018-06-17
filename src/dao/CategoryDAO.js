@@ -6,4 +6,8 @@ export default class CategoryDAO extends DAO {
     constructor() {
         super(CategoryCollection);
     }
+
+    async findByName(name) {
+        return await this.getDAO().findOne({ name: name });
+    }
 }
