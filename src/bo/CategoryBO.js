@@ -1,5 +1,6 @@
 import NegotiationException from "./../exception/NegotiationException";
 import NotFoundException from "./../exception/NotFoundException";
+import customMessage, * as MESSAGE from "./../exception/ExceptionMessage";
 
 
 export default class CategoryBO {
@@ -11,7 +12,7 @@ export default class CategoryBO {
     async save(newCategory) {
         const alreadyCategoryWithName = await ths._existCategoryWithName(newCategory.name);
         if (alreadyCategoryWithName) {
-            throw new NegotiationException("Category already register.");
+            throw new NegotiationException(customMessage("Category", MESSAGE.ALREADY_EXISTS));
         }
 
         await this._dao.save(newCategory);
@@ -24,7 +25,7 @@ export default class CategoryBO {
     async findById(id) {
         const category = await this._dao.findById(id);
         if (category) {
-            throw new NotFoundException("Not found category");
+            throw new NotFoundException(customMessage("Category", MESSAGE.NOT_FOUND));
         }
 
         return category;
@@ -33,7 +34,7 @@ export default class CategoryBO {
     async delete(id) {
         const category = await this.findById(id);
         if (category.number_articles) {
-            NegotiationException("Category is relationship one article.")
+            NegotiationException(customMessage("Category", "is relationship one article."));
         }
         await this._dao.delete(id);
     }
