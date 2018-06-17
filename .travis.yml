@@ -10,7 +10,7 @@ cache:
     - node_modules
 
 # SETTING BRANCH RUNNING TRAVIS CI.
-branch:
+branches:
   only:
     - master
 
