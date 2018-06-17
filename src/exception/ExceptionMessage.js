@@ -3,7 +3,3 @@ export default {
     ALREADY_EXISTS: "Register already exists."
 
 }
-
-export function customMessage(entity, message) {
-   `${entity} ${message.toLowerCase()}`;
-}

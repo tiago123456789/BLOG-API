@@ -2,6 +2,11 @@ export default class CategoryEndpoint {
 
     constructor(bo) {
         this._bo = bo;
+        this.save = this.save.bind(this);
+        this.findAll = this.findAll.bind(this);
+        this.findById = this.findById.bind(this);
+        this.delete = this.delete.bind(this);
+        this.update = this.update.bind(this);
     }
 
     async save(request, response, next) {
@@ -29,6 +34,7 @@ export default class CategoryEndpoint {
             const category = await this._bo.findById(id);
             response.status(200).json(category);
         } catch (e) {
+            console.log(e);
             next(e);
         }
     }

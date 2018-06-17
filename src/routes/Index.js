@@ -1,12 +1,17 @@
 import express from "express";
 import tagRouter from "./Tag";
+import CategoryRouter from "./Category";
+
 import ErrorValidation from "../lib/ErrorValidation";
 
 export default (app) => {
 
     app.use("/tags", tagRouter(express.Router()));
+    app.use("/categories", CategoryRouter(express.Router()));
+    
 
     app.use((error, request, response, next) => {
+        console.log(error);
         switch(error.code) {
             case "NOT_FOUND":
                 return response.status(404).json({ msg: error.message });
