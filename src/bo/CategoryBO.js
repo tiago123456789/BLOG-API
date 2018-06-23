@@ -10,7 +10,7 @@ export default class CategoryBO {
     }
 
     async save(newCategory) {
-        const alreadyCategoryWithName = await this._existCategoryWithName(newCategory.name);
+        const alreadyCategoryWithName = await this._existCategoryWithName(newCategory.description);
         if (alreadyCategoryWithName) {
             throw new NegotiationException(MESSAGE.ALREADY_EXISTS);
         }

@@ -8,6 +8,6 @@ export default class CategoryDAO extends DAO {
     }
 
     async findByName(name) {
-        return await this.getDAO().findOne({ name: name });
+        return await this.getDAO().findOne({ description: name });
     }
 }
