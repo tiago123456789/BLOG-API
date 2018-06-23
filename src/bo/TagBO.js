@@ -14,7 +14,7 @@ export default class TagBO {
             throw new NegotiationException("Already exists this tag!");
         }
 
-        this._tagDAO.save(newTag);
+        await this._tagDAO.save(newTag);
     }
 
     async findById(id) {

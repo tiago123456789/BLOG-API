@@ -5,8 +5,8 @@ class DAO {
         this._dao = dao;
     }
 
-    save(newTag) {
-        this._dao.create(newTag);
+    async save(newTag) {
+        await this._dao.create(newTag);
     }
 
     async findById(id) {
