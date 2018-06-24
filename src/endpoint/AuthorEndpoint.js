@@ -5,6 +5,8 @@ export default class AuthorEndpoint {
         this.findAll = this.findAll.bind(this);
         this.findById = this.findById.bind(this);
         this.save = this.save.bind(this);
+        this.delete = this.delete.bind(this);
+        this.update = this.update.bind(this);
     }
 
     async findAll(request, response, next) {
@@ -31,6 +33,27 @@ export default class AuthorEndpoint {
             const newAuthor = request.body;
             await this._bo.save(newAuthor);
             response.sendStatus(201);
+        } catch(e) {
+            next(e);
+        }
+    }
+
+    async delete(request, response, next) {
+        try {
+            const id = request.params.id;
+            await this._bo.delete(id);
+            response.sendStatus(204);
+        } catch(e) {
+            next(e);
+        }
+    }
+
+    async update(request, response, next) {
+        try {
+            const id = request.params.id;
+            const authorModify = request.body;
+            await this._bo.update(id, authorModify);
+            response.sendStatus(204);
         } catch(e) {
             next(e);
         }

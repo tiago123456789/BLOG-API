@@ -29,6 +29,22 @@ export default class AuthorBO {
         await this._dao.save(newAuthor);
     }
 
+    async delete(id) {
+        await this.findById(id);
+        // If author have more than 1 article not delete. 
+        await this._dao.delete(id);
+    }
+
+    async update(id, authorModify) {
+        await this.findById(id);
+
+        if (authorModify.password) {
+            authorModify.password = await Encoder.getHash(authorModify.password);
+        }
+        
+        await this._dao.update(id, authorModify);
+    }
+
     async _verifyIfEmailExists(email) {
         const author = await this._dao.findByEmail(email);
         return author; 
