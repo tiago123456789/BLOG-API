@@ -7,4 +7,8 @@ export default class AuthorDAO extends DAO {
     constructor() {
         super(AuthorCollection);
     }
+
+    async findByEmail(email) {
+        return await this.getDAO().findOne({ email: email });
+    }
 }

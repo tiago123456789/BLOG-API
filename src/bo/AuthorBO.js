@@ -1,4 +1,6 @@
 import NotFoundException from "./../exception/NotFoundException";
+import NegotiationException from "./../exception/NegotiationException";
+import Encoder from "../lib/Encoder";
 
 export default class AuthorBO {
     
@@ -7,7 +9,7 @@ export default class AuthorBO {
     }
 
     async findAll() {
-        return await this._dao.findAll();
+        return await this._dao.findAll({ email: 1, name: 1 });
     }
 
     async findById(id) {
@@ -16,5 +18,19 @@ export default class AuthorBO {
             throw new NotFoundException("Author not found!");
         }
         return author;
+    }
+
+    async save(newAuthor){
+        const someAuthorUsedEmail = await this._verifyIfEmailExists(newAuthor.email);
+        if (someAuthorUsedEmail) {
+            throw new NegotiationException("Email already used!");
+        }
+        newAuthor.password = await Encoder.getHash(newAuthor.password);
+        await this._dao.save(newAuthor);
+    }
+
+    async _verifyIfEmailExists(email) {
+        const author = await this._dao.findByEmail(email);
+        return author; 
     }
 }

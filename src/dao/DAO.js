@@ -13,8 +13,8 @@ class DAO {
         return await this._dao.findById(id);
     }
 
-    async findAll() {
-        return await this._dao.find({});
+    async findAll(fieldsReturned) {
+        return await this._dao.find({}, fieldsReturned);
     }
 
     async delete(id) {

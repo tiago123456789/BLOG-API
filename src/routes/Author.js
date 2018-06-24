@@ -10,5 +10,7 @@ export default (router) => {
 
     router.get("", authorEndpoint.findAll);
     router.get("/:id", authorEndpoint.findById);
+    router.post("", authorEndpoint.save);
+    
     return router;
 }
