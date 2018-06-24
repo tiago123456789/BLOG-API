@@ -1,13 +1,15 @@
 import express from "express";
 import tagRouter from "./Tag";
-import CategoryRouter from "./Category";
+import categoryRouter from "./Category";
+import authorRouter from "./Author";
 
 import ErrorValidation from "../lib/ErrorValidation";
 
 export default (app) => {
 
     app.use("/tags", tagRouter(express.Router()));
-    app.use("/categories", CategoryRouter(express.Router()));
+    app.use("/categories", categoryRouter(express.Router()));
+    app.use("/authors", authorRouter(express.Router()));
     
 
     app.use((error, request, response, next) => {
