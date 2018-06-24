@@ -52,4 +52,63 @@ describe("Suited test CategoryBO", () => {
             chai.expect(e.code).to.be.eql('NOT_FOUND');
         }
     });
+
+    it("Should delete category", async() => {
+        const idFake = 1;
+        const categoryFake = { description: "Category teste", number_articles: 0 };
+        const daoFake = {
+            findById: sinon.stub(),
+            delete: sinon.spy()
+        }
+
+        daoFake.findById.withArgs(idFake).returns(categoryFake);
+        const categoryBO = new CategoryBO(daoFake);
+        await categoryBO.delete(idFake);
+        chai.assert(daoFake.delete.calledOnce);
+    });
+
+    it("Should trigger exception to the delete a category not found", async () => {
+        const idFake = 1;
+        const categoryFake = { description: "Category teste", number_articles: 0 };
+        const daoFake = {
+            findById: sinon.stub(),
+            delete: sinon.spy()
+        }
+
+        daoFake.findById.withArgs(idFake).returns(null);
+        const categoryBO = new CategoryBO(daoFake);
+        try {
+            await categoryBO.delete(idFake);            
+        } catch(e) {
+            chai.expect(e.code).to.be.eq("NOT_FOUND");
+        }
+    });
+
+    it("Should updated category", async () => {
+        const idFake = 1;
+        const categoryFake = { description: "Category teste", number_articles: 0 };
+        const daoFake = {
+            findById: sinon.stub(),
+            update: sinon.spy()
+        };
+        daoFake.findById.withArgs(idFake).returns(categoryFake);
+        const categoryBO = new CategoryBO(daoFake);
+        await categoryBO.update(idFake, categoryFake);
+        chai.assert(daoFake.update.calledOnce);
+    });
+
+    it("Should trigger exception to the try updated category", async () => {
+        const idFake = 1;
+        const categoryFake = null;
+        const daoFake = {
+            findById: sinon.stub()
+        };
+        daoFake.findById.withArgs(idFake).returns(categoryFake);
+        const categoryBO = new CategoryBO(daoFake);
+        try {
+            await categoryBO.update(idFake, categoryFake);
+        } catch(e) {
+            chai.expect(e.code).to.eq("NOT_FOUND");
+        }
+    });
 });
