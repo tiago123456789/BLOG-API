@@ -14,7 +14,8 @@ describe("Suit tests AuthorBo", () => {
     };
 
     const CODE_EXCEPTION = {
-        NOT_FOUND: "NOT_FOUND"
+        NOT_FOUND: "NOT_FOUND",
+        NEGOTIATION: "NEGOTIATION"
     }
 
     afterEach(() => sinon.restore);
@@ -127,6 +128,35 @@ describe("Suit tests AuthorBo", () => {
             await authorBO.update(idFake, authorFake);
         } catch(e) {
             expect(e.code).to.be.eql(CODE_EXCEPTION.NOT_FOUND)
+        }
+    });
+
+    it("Should save new author", async () => {
+        const daoFake = {
+            findByEmail: sinon.stub(),
+            save: sinon.spy()
+        };
+
+        daoFake.findByEmail.withArgs(authorFake.email).returns(null);
+        const authorBO = new AuthorBO(daoFake);
+        
+        await authorBO.save(authorFake);
+        chai.assert(daoFake.save.calledOnce);
+    });
+
+    it("Should trigger exception to the save new author with email already used.", async () => {
+        const daoFake = {
+            findByEmail: sinon.stub(),
+            save: sinon.spy()
+        };
+
+        daoFake.findByEmail.withArgs(authorFake.email).returns(authorFake);
+        const authorBO = new AuthorBO(daoFake);
+        
+        try {
+            await authorBO.save(authorFake);
+        } catch(e) {
+            expect(e.code).to.be.eql(CODE_EXCEPTION.NEGOTIATION);
         }
     });
 });
