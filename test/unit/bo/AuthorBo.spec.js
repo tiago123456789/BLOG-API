@@ -6,6 +6,13 @@ const expect = chai.expect;
 
 describe("Suit tests AuthorBo", () => {
 
+    const authorFake = { 
+        name: "Author fake",
+        describe: "Master fake",
+        email: "authorfake@gmail.com",
+        password: "1234"
+    };
+
     afterEach(() => sinon.restore);
 
     it("Should return all authors", async () => {
@@ -39,12 +46,6 @@ describe("Suit tests AuthorBo", () => {
 
     it("Should return author specified", async () => {
         const idFake = 1;
-        const authorFake = { 
-            name: "Author fake",
-            describe: "Master fake",
-            email: "authorfake@gmail.com",
-            password: "1234"
-        };
         const daoFake = {
             findById: sinon.stub()
         };
@@ -69,5 +70,17 @@ describe("Suit tests AuthorBo", () => {
             expect(e.code).to.be.eq("NOT_FOUND");
         }
     });
+
+    it("Should delete author", async () => {
+        const idFake = 1;
+        const daoFake = {
+            delete: sinon.spy(),
+            findById: sinon.stub()
+        };
+        daoFake.findById.withArgs(idFake).returns(authorFake);
+        const authorBO = new AuthorBO(daoFake);
+        await authorBO.delete(idFake);
+        chai.assert(daoFake.delete.calledOnce);        
+    })
 
 });
