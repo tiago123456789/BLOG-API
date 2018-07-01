@@ -13,6 +13,10 @@ describe("Suit tests AuthorBo", () => {
         password: "1234"
     };
 
+    const CODE_EXCEPTION = {
+        NOT_FOUND: "NOT_FOUND"
+    }
+
     afterEach(() => sinon.restore);
 
     it("Should return all authors", async () => {
@@ -67,7 +71,7 @@ describe("Suit tests AuthorBo", () => {
         try {
             const authorReturned = await authorBO.findById(idFake);
         } catch(e) {
-            expect(e.code).to.be.eq("NOT_FOUND");
+            expect(e.code).to.be.eq(CODE_EXCEPTION.NOT_FOUND);
         }
     });
 
@@ -81,6 +85,48 @@ describe("Suit tests AuthorBo", () => {
         const authorBO = new AuthorBO(daoFake);
         await authorBO.delete(idFake);
         chai.assert(daoFake.delete.calledOnce);        
-    })
+    });
 
+    it("Should trigger exception to the try deleted author than not exists", async () => {
+        const idFake = 1;
+        const daoFake = {
+            delete: sinon.spy(),
+            findById: sinon.stub()
+        };
+        daoFake.findById.withArgs(idFake).returns(null);
+        const authorBO = new AuthorBO(daoFake);
+
+        try {
+            await authorBO.delete(idFake);
+        } catch(e) {
+            expect(e.code).to.be.eql(CODE_EXCEPTION.NOT_FOUND)
+        }
+    });
+
+    it("Should update author", async () => {
+        const idFake = 1;
+        const daoFake = {
+            update: sinon.spy(),
+            findById: sinon.stub()
+        };
+        daoFake.findById.withArgs(idFake).returns(authorFake);
+        const authorBO = new AuthorBO(daoFake);
+        await authorBO.update(idFake, authorFake);
+        chai.assert(daoFake.update.calledOnce);        
+    });
+
+    it("Should trigger exception to the update author than not exists", async () => {
+        const idFake = 1;
+        const daoFake = {
+            update: sinon.spy(),
+            findById: sinon.stub()
+        };
+        daoFake.findById.withArgs(idFake).returns(null);
+        const authorBO = new AuthorBO(daoFake);
+        try {
+            await authorBO.update(idFake, authorFake);
+        } catch(e) {
+            expect(e.code).to.be.eql(CODE_EXCEPTION.NOT_FOUND)
+        }
+    });
 });
