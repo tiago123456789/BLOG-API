@@ -21,3 +21,7 @@ notifications:
       - tiagorosadacost@gmail.com
     on_success: always
     on_failure: always
+
+# SETTING SERVICES USED IN APP
+services:
+  - mongodb
