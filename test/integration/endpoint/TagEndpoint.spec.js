@@ -30,7 +30,6 @@ describe("Suit test integration Tag", () => {
     });
 
     it("DELETE /tags/:id", () => {
-
         request(app)
             .delete("/tags/" + tagFake._id)
             .expect(204);
