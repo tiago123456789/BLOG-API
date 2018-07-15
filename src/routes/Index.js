@@ -2,6 +2,7 @@ import express from "express";
 import tagRouter from "./Tag";
 import categoryRouter from "./Category";
 import authorRouter from "./Author";
+import articleRouter from "./Article";
 
 import ErrorValidation from "../lib/ErrorValidation";
 
@@ -10,7 +11,7 @@ export default (app) => {
     app.use("/tags", tagRouter(express.Router()));
     app.use("/categories", categoryRouter(express.Router()));
     app.use("/authors", authorRouter(express.Router()));
-    
+    app.use("/articles", articleRouter(express.Router()));
 
     app.use((error, request, response, next) => {
 
