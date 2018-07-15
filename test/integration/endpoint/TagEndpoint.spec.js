@@ -35,4 +35,12 @@ describe("Suit test integration Tag", () => {
             .delete("/tags/" + tagFake._id)
             .expect(204);
     });
+
+    it("PUT /tags/:id", () => {
+        request(app)
+            .put("/tags/" + tagFake._id)
+            .expect(204);
+    })
+
+
 });
