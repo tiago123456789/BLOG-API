@@ -6,10 +6,10 @@ import TagService from "./../service/TagService";
 const expect = chai.expect;
 const request = supertest;
 
-describe("Suit test integration Tag", () => {
+describe("Test integration route tag", () => {
     const tagFake = { _id: "56cb91bdc3464f14678934ba", name: "Tag Fake" };
 
-    after(() => {
+    before(() => {
         TagService.deleteAll();
     });
 
@@ -26,18 +26,25 @@ describe("Suit test integration Tag", () => {
         request(app)
             .post("/tags")
             .send(tagFake)
-            .expect(201);
+            .expect(201)
+            .end((error, response) => {
+                expect(response.status).to.be.eq(201);
+            });
     });
 
     it("DELETE /tags/:id", () => {
         request(app)
             .delete("/tags/" + tagFake._id)
-            .expect(204);
+            .expect(204)
+            .end((error, response) => {
+                expect(response.status).to.be.eq(204);
+            });
     });
 
     it("PUT /tags/:id", () => {
         request(app)
             .put("/tags/" + tagFake._id)
+            .send(tagFake)
             .expect(204);
     })
 
