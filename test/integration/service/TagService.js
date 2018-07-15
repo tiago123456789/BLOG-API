@@ -1,8 +1,12 @@
-import TagCollections from "./../../../src/collections/Tag";
+import TagCollection from "./../../../src/collections/Tag";
 
 export default class Tag {
 
+    static async create(tag) {
+        await TagCollection.create(tag);
+    }
+
     static async deleteAll() {
-        await TagCollections.deleteMany({});
+        await TagCollection.deleteMany({});
     }
 }

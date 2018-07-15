@@ -14,16 +14,17 @@ describe("Test integration route category", () => {
         await CategoryService.deleteAll();
     });
 
-    it("GET /categories", () => {
+    it("GET /categories", function(done) {
         request(app)
             .get("/categories")
             .expect(200)
             .end((error, response) => {
                 expect(response.body).to.be.an("array");
+                done();
             });
     });
 
-    it("POST /categories", () => {
+    it("POST /categories", function(done) {
 
         request(app)
             .post("/categories")
@@ -31,20 +32,22 @@ describe("Test integration route category", () => {
             .expect(201)
             .end((error, response) => {
                 expect(response.status).to.be.eq(201);
+                done();
             });
     });
 
-    it("GET /categories/:id", async () => {
+    it("GET /categories/:id", function(done) {
         request(app)
             .get("/categories/" + categoryFake._id)
             .expect(200)
             .end((error, response) => {
                 expect(response.body).to.be.an("object");
+                done();                
             })
     });
 
 
-    it("DELETE /categories/:id", () => {
+    it("DELETE /categories/:id", function(done) {
         categoryFake._id = "56cb91bdc3464f14678934bc";
         CategoryService.create(categoryFake);
         request(app)
@@ -52,10 +55,11 @@ describe("Test integration route category", () => {
             .expect(204)
             .end((error, response) => {
                 expect(response.status).to.be.eq(204);
+                done();                
             });
     });
 
-    it("PUT /categorias/:id", () => {
+    it("PUT /categorias/:id", function(done) {
         CategoryService.create(categoryFake);
         request(app)
             .put("/categories/" + categoryFake._id)
@@ -63,6 +67,7 @@ describe("Test integration route category", () => {
             .expect(204)
             .end((error, response) => {
                 expect(response.status).to.be.eq(204);
+                done();
             })
     })
 
