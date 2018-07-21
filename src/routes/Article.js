@@ -13,5 +13,6 @@ export default (router) => {
     router.post("", articleEndpoint.save);
     router.delete("/:id", articleEndpoint.delete);
     router.put("/:id", articleEndpoint.update);
+    router.post("/:id/comments", articleEndpoint.addComment);
     return router;
 }

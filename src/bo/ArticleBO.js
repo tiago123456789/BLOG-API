@@ -45,4 +45,9 @@ export default class ArticleBO {
         await this.findById(id);
         this._dao.update(id, articleModified);
     }
+
+    async addComment(idArticle, commnet) {
+        await this.findById(idArticle);
+        this._dao.addComment(idArticle, commnet);
+    }
 }

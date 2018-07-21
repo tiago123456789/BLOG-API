@@ -7,6 +7,7 @@ export default class ArticleEndpoint {
         this.save = this.save.bind(this);
         this.delete = this.delete.bind(this);
         this.update = this.update.bind(this);
+        this.addComment = this.addComment.bind(this);
     }
 
     async findAll(request, response) {
@@ -50,6 +51,17 @@ export default class ArticleEndpoint {
             const articleModified = request.body;
             await this._bo.update(id, articleModified);
             response.sendStatus(204);
+        } catch(e) {
+            next(e);
+        }
+    }
+
+    async addComment(request, response, next) {
+        try {
+            const id = request.params.id;
+            const body = request.body;
+            await this._bo.addComment(id, body.comment);
+            response.sendStatus(201);
         } catch(e) {
             next(e);
         }
