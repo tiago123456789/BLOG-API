@@ -13,6 +13,14 @@ export default (app) => {
     app.use("/authors", authorRouter(express.Router()));
     app.use("/articles", articleRouter(express.Router()));
 
+    app.use((request, response) => {
+        const message = {
+            status: 404,
+            message: "Sorry! Route not found."
+        };
+        response.status(message.status).json(message);
+    });
+
     app.use((error, request, response, next) => {
 
         if (error.hasOwnProperty("errors")) {
