@@ -24,11 +24,25 @@ export default class ArticleBO {
     }
 
     async save(article) {
+        if (!article.category) {
+            throw new NegotiationException("Category is required.");
+        }
+
         if (!article.author) {
             throw new NegotiationException("Author is required.");
         }
         
         await this._authorBO.findById(article.author.id);
         await this._dao.save(article);
+    }
+
+    async delete(id) {
+        await this.findById(id);
+        this._dao.delete(id);  
+    }
+
+    async update(id, articleModified) {
+        await this.findById(id);
+        this._dao.update(id, articleModified);
     }
 }

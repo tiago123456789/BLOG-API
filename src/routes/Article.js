@@ -11,5 +11,7 @@ export default (router) => {
     router.get("", articleEndpoint.findAll);
     router.get("/:id", articleEndpoint.findBydId);
     router.post("", articleEndpoint.save);
+    router.delete("/:id", articleEndpoint.delete);
+    router.put("/:id", articleEndpoint.update);
     return router;
 }
