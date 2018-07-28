@@ -8,7 +8,8 @@ describe("Suit tests ArticleBO", () => {
 
     const daoFake = {
         findAll: sinon.stub(),
-        findById: sinon.stub()
+        findById: sinon.stub(),
+        save: sinon.spy()
     };
 
     afterEach(() => sinon.stub());
@@ -66,6 +67,26 @@ describe("Suit tests ArticleBO", () => {
         } catch(e) {
             expect(e.code).to.eq("NOT_FOUND");
         }
-        
+    });
+
+    it("Should create new register article", async () => {
+        const articleFake = {
+            title: "Article fake to test",
+            content: "Article fake",
+            tags: ["Test", "Fake"],
+            category: "teste",
+            author: {
+                id: "56cb91bdc3464f14678934ba",
+                name: "author fake"
+            },
+            comments: ["Fake test"]
+        };
+        const authorBOFake = {
+            findById: sinon.stub()
+        };
+        authorBOFake.findById.withArgs(articleFake.author.id).returns(articleFake.author);
+        const articleBO = new ArticleBO(daoFake, authorBOFake);
+        await articleBO.save(articleFake);
+        chai.assert(daoFake.save.calledOnce);            
     });
 });

@@ -5,9 +5,9 @@ import AuthorBO from "./AuthorBO";
 
 export default class ArticleBO {
 
-    constructor(dao) {
+    constructor(dao, authorBO) {
         this._dao = dao; 
-        this._authorBO = new AuthorBO(new AuthorDAO());
+        this._authorBO = authorBO || new AuthorBO(new AuthorDAO());
     }
 
     async findAll() {
