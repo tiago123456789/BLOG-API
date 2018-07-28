@@ -14,7 +14,7 @@ describe("Suit test integration AuthorRoute", () => {
         password: "123466"
     };
 
-    before(async () => {
+    beforeEach(async () => {
         await AuthorService.deleteAll();
     });
 
@@ -40,17 +40,20 @@ describe("Suit test integration AuthorRoute", () => {
     });
 
     it("GET /authors/:id", function (done) {
-        request(app)
-            .get("/authors/" + authorFake._id)
-            .expect(200)
-            .end(done);
+        AuthorService.create(authorFake).then(() => {
+            request(app)
+                .get("/authors/" + authorFake._id)
+                .expect(200);
+        }).then(done);
     });
 
     it("DELETE /authors/:id", function (done) {
-        request(app)
-            .delete("/authors/" + authorFake._id)
-            .expect(204)
-            .end(done);
+        AuthorService.create(authorFake).then(() => {
+            request(app)
+                .delete("/authors/" + authorFake._id)
+                .expect(204)
+                .end(done);
+        });
     });
 
     it("PUT /authors/:id", function (done) {
