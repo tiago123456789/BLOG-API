@@ -8,6 +8,10 @@ export default class AuthorBO {
         this._dao = dao;
     }
 
+    async findByEmail(email) {
+        return await this._dao.findByEmail(email);
+    }
+
     async findAll() {
         return await this._dao.findAll({ email: 1, name: 1 });
     }
