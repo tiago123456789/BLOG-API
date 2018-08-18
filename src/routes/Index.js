@@ -4,7 +4,7 @@ import categoryRouter from "./Category";
 import authorRouter from "./Author";
 import articleRouter from "./Article";
 
-import ErrorValidation from "../lib/ErrorValidation";
+import errorHandler from "../middleware/ErrorHandler";
 
 export default (app) => {
 
@@ -21,19 +21,5 @@ export default (app) => {
         response.status(message.status).json(message);
     });
 
-    app.use((error, request, response, next) => {
-
-        if (error.hasOwnProperty("errors")) {
-            return response.status(400).json({ mgs: ErrorValidation.getErrorValidation(error) })
-        }
-        
-        switch(error.code) {
-            case "NOT_FOUND":
-                return response.status(404).json({ msg: error.message });
-            case "NEGOTIATION":
-                return response.status(409).json({ msg: error.message });
-            default:
-                return response.status(500).json({ mgs: error.message });
-        }
-    });
+    app.use(errorHandler);
 }
