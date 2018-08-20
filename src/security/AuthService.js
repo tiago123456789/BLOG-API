@@ -1,15 +1,17 @@
-import TokenBuiler from "./TokenBuilder";
-import Token from "./Token";
-import AuthorBO from "../bo/AuthorBO";
-import NegotiationException from "../exception/NegotiationException";
-import Encoder from "../lib/Encoder";
+import TokenService from "./TokenService";
 
-export default class AutenticacaoService {
+export default class AuthService {
 
     static DATA_INVALID = "Dados informados são inválidos!";
 
     constructor() {
         this._authorBo = new AuthorBO();
+        this._tokenService = new TokenService();
+    }
+
+    async temAcesso(token) {
+        const eUmTokenValido = await this._tokenService.isValid(token);
+        return eUmTokenValido;
     }
 
     async login(credenciais) {
@@ -42,8 +44,27 @@ export default class AutenticacaoService {
 
     }
 
-    loginByRefreshToken(refreshToken) {
+    async loginByRefreshToken(refreshToken) {
+        const refreshTokenEValid = await this._tokenService.isValid(refreshToken);
+        
+        if (!refreshTokenEValid) {
+            throw new SecurityException("Datas invalids!")
+        }
 
+        const payloadToken = await this._tokenService.decode(refreshToken);
+        const author = await this._authorBo.findByEmail(payloadToken.email);
+
+        if (author) {
+            throw new SecurityException("Datas invalids!")
+        }
+
+        const { email, name, id } = author;
+
+        return {
+            ...this._getAccessERefreshToken({ email, name, id}),
+            id, 
+            name
+        }
     }
 
     _getAccessERefreshToken(dados) {
