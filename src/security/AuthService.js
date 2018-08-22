@@ -1,4 +1,5 @@
 import TokenService from "./TokenService";
+import AuthorBO from "./../bo/AuthorBO";
 
 export default class AuthService {
 
@@ -9,19 +10,29 @@ export default class AuthService {
         this._tokenService = new TokenService();
     }
 
-    async temAcesso(token) {
-        const eUmTokenValido = await this._tokenService.isValid(token);
-        return eUmTokenValido;
+    async temAcesso(request, response, next) {
+        try {
+            const accessToken = this._tokenService.getAccessToken(request);
+            const eUmTokenValido = await this._tokenService.isValid(token);
+            if (!eUmTokenValido) {
+                return next(new SecurityException("Token invalid!"));
+            }
+            return next();    
+        } catch(e) {
+            next(e);
+        }
+        
     }
 
     async login(credenciais) {
-        const { email, password } = credenciais;
+        const emailAutenticacao = credenciais.email;
+        const senha = credenciais.senha;
 
-        if (!email || !password) {
+        if (!emailAutenticacao || !password) {
             throw new NegotiationException("Deve ser informado email é senha.")
         }
 
-        const pessoa = await this._authorBo.findByEmail(email);
+        const pessoa = await this._authorBo.findByEmail(emailAutenticacao);
 
         if (!pessoa) {
             throw new SecurityException(AutenticacaoService.DATA_INVALID, 403);

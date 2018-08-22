@@ -3,15 +3,20 @@ import tagRouter from "./Tag";
 import categoryRouter from "./Category";
 import authorRouter from "./Author";
 import articleRouter from "./Article";
+import authRouter from "./Auth";
+import AuthService from "./../security/AuthService";
 
 import errorHandler from "../middleware/ErrorHandler";
 
+const authService = new AuthService();
+
 export default (app) => {
 
-    app.use("/tags", tagRouter(express.Router()));
+    app.use("/tags", authService.temAcesso, tagRouter(express.Router()));
     app.use("/categories", categoryRouter(express.Router()));
-    app.use("/authors", authorRouter(express.Router()));
-    app.use("/articles", articleRouter(express.Router()));
+    app.use("/authors", authService.temAcesso, authorRouter(express.Router()));
+    app.use("/articles", authService.temAcesso, articleRouter(express.Router()));
+    app.use("/auth", authService.temAcesso, authRouter(express.Router()));
 
     app.use((request, response) => {
         const message = {

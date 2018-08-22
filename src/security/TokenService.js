@@ -1,7 +1,14 @@
 import jwt from "jsonwebtoken";
+import { CONSTANTES } from "../config/Constantes";
 
 export default class TokenService {
     
+    getAccessToken(request) {
+        let token = request.get(CONSTANTES.PARAM_AUTHORIZATION) || "";
+        token = token.replace(`${CONSTANTES.PARAM_PREFIX_TOKEN} `, "");
+        return token;
+    }
+
     decode(token) {
         if (this._isJwtValid(token)) {
             throw new SecurityException("Token invalid!");
