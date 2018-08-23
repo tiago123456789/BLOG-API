@@ -1,5 +1,7 @@
 import TokenService from "./TokenService";
 import AuthorBO from "./../bo/AuthorBO";
+import Encoder from "./../lib/Encoder";
+import SecurityException from "./../exception/SecurityException";
 
 export default class AuthService {
 
@@ -8,12 +10,19 @@ export default class AuthService {
     constructor() {
         this._authorBo = new AuthorBO();
         this._tokenService = new TokenService();
+        this.temAcesso = this.temAcesso.bind(this);
     }
 
     async temAcesso(request, response, next) {
         try {
             const accessToken = this._tokenService.getAccessToken(request);
-            const eUmTokenValido = await this._tokenService.isValid(token);
+            
+            if (accessToken.length == 0) {
+                return response.status(403).json({ msg: "Need to inform token!"})
+            }
+
+            const eUmTokenValido = await this._tokenService.isValid(accessToken);
+            
             if (!eUmTokenValido) {
                 return next(new SecurityException("Token invalid!"));
             }
@@ -26,7 +35,7 @@ export default class AuthService {
 
     async login(credenciais) {
         const emailAutenticacao = credenciais.email;
-        const senha = credenciais.senha;
+        const password = credenciais.password;
 
         if (!emailAutenticacao || !password) {
             throw new NegotiationException("Deve ser informado email é senha.")
@@ -35,14 +44,14 @@ export default class AuthService {
         const pessoa = await this._authorBo.findByEmail(emailAutenticacao);
 
         if (!pessoa) {
-            throw new SecurityException(AutenticacaoService.DATA_INVALID, 403);
+            throw new SecurityException(AuthService.DATA_INVALID, 403);
         }
 
         const senhaEncriptada = Encoder.getHash(password);
         const senhaEValida = pessoa.password == senhaEncriptada;
         
         if (!senhaEValida) {
-            throw new SecurityException(AutenticacaoService.DATA_INVALID, 403);
+            throw new SecurityException(AuthService.DATA_INVALID, 403);
         }
 
         const { email, name, id } = pessoa;

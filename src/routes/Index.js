@@ -13,10 +13,10 @@ const authService = new AuthService();
 export default (app) => {
 
     app.use("/tags", authService.temAcesso, tagRouter(express.Router()));
-    app.use("/categories", categoryRouter(express.Router()));
+    app.use("/categories",authService.temAcesso, categoryRouter(express.Router()));
     app.use("/authors", authService.temAcesso, authorRouter(express.Router()));
-    app.use("/articles", authService.temAcesso, articleRouter(express.Router()));
-    app.use("/auth", authService.temAcesso, authRouter(express.Router()));
+    app.use("/articles", articleRouter(express.Router()));
+    app.use("/auth", authRouter(express.Router()));
 
     app.use((request, response) => {
         const message = {

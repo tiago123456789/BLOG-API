@@ -16,7 +16,7 @@ export default class TokenService {
         return jwt.decode(token);
     }
 
-    isValid() {
+    isValid(token) {
         return new Promise((resolve, reject) => {
             if (this._isJwtValid(token)) {
                 reject(new SecurityException("Token invalid!"));

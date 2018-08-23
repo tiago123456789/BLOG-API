@@ -1,11 +1,12 @@
 import NotFoundException from "./../exception/NotFoundException";
 import NegotiationException from "./../exception/NegotiationException";
+import AuthorDAO from "./../dao/AuthorDAO";
 import Encoder from "../lib/Encoder";
 
 export default class AuthorBO {
     
     constructor(dao) {
-        this._dao = dao;
+        this._dao = dao || new AuthorDAO();
     }
 
     async findByEmail(email) {
