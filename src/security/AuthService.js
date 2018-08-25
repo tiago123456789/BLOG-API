@@ -2,6 +2,8 @@ import TokenService from "./TokenService";
 import AuthorBO from "./../bo/AuthorBO";
 import Encoder from "./../lib/Encoder";
 import SecurityException from "./../exception/SecurityException";
+import TokenBuilder from "./TokenBuilder";
+import Token from "./Token";
 
 export default class AuthService {
 
@@ -16,7 +18,6 @@ export default class AuthService {
     async temAcesso(request, response, next) {
         try {
             const accessToken = this._tokenService.getAccessToken(request);
-            
             if (accessToken.length == 0) {
                 return response.status(403).json({ msg: "Need to inform token!"})
             }
@@ -42,14 +43,11 @@ export default class AuthService {
         }
 
         const pessoa = await this._authorBo.findByEmail(emailAutenticacao);
-
         if (!pessoa) {
             throw new SecurityException(AuthService.DATA_INVALID, 403);
         }
 
-        const senhaEncriptada = Encoder.getHash(password);
-        const senhaEValida = pessoa.password == senhaEncriptada;
-        
+        const senhaEValida = await Encoder.isEqual(password, pessoa.password);
         if (!senhaEValida) {
             throw new SecurityException(AuthService.DATA_INVALID, 403);
         }

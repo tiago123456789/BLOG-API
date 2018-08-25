@@ -5,11 +5,11 @@ export default class Token {
         ACCESS: "ACCESS"
     }
 
-    constructor(typeToken) {
+    constructor(typeToken = Token.TYPE.ACCESS) {
         this._payload = {};
-        this._secret = proccess.env.TOKEN_SECRET;
+        this._secret = process.env.TOKEN_SECRET;
         this._type = typeToken;
-        this.addValuePayload(type, typeToken);
+        this.addValuePayload("type", typeToken);
     }
 
     addValuePayload(key, value) {

@@ -9,7 +9,7 @@ export default class TokenBuiler {
     build() {
         return jwt.sign(
             this._token.getPayload(),
-            this.token.getSecret(),
+            this._token.getSecret(),
             { expiresIn: this._token.getTimeExpired() }
         );
     }
