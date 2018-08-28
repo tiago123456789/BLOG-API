@@ -64,7 +64,7 @@ export default class AuthService {
 
     async loginByRefreshToken(refreshToken) {
         const refreshTokenEValid = await this._tokenService.isValid(refreshToken);
-        
+
         if (!refreshTokenEValid) {
             throw new SecurityException("Datas invalids!")
         }
@@ -72,7 +72,7 @@ export default class AuthService {
         const payloadToken = await this._tokenService.decode(refreshToken);
         const author = await this._authorBo.findByEmail(payloadToken.email);
 
-        if (author) {
+        if (!author) {
             throw new SecurityException("Datas invalids!")
         }
 

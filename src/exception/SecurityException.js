@@ -1,5 +1,5 @@
 function SecurityException(message, status) {
-    this.code = "SECURITY";
+    this.name = "SECURITY";
     this.message = message;
     this.status = status;
 };

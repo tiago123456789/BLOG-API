@@ -1,5 +1,5 @@
 function NegotiationException(message) {
-    this.code = "NEGOTIATION";
+    this.name = "NEGOTIATION";
     this.message = message;   
 }
 

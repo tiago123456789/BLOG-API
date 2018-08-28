@@ -1,5 +1,5 @@
 function NotFoundException(message) {
-    this.code = "NOT_FOUND";
+    this.name = "NOT_FOUND";
     this.message = message;
 };
 

@@ -22,7 +22,7 @@ export default class Token {
     }
 
     getSecret() {
-        return Buffer.from(this._secret).toString("base64")
+        return Buffer.from(this._secret || process.env.TOKEN_SECRET).toString("base64")
     }
 
     getTimeExpired() {

@@ -27,7 +27,7 @@ export default class TokenService {
             if (this._isJwtValid(token)) {
                 reject(new SecurityException("Token invalid!"));
             }
-
+            
             jwt.verify(token, this._token.getSecret(), (err, jwtDecoded) => {
                 if (err) {
                     reject(err);
