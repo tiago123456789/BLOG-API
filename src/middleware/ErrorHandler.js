@@ -1,4 +1,5 @@
 import ErrorValidation from "../lib/ErrorValidation";
+import logger from "./../config/Logger";
 
 export default (error, request, response, next) => {
     if (error.hasOwnProperty("errors")) {
@@ -14,6 +15,7 @@ export default (error, request, response, next) => {
         case "NEGOTIATION":
             return response.status(409).json({ msg: error.message });
         default:
+            logger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
             return response.status(500).json({ mgs: error.message });
     }
 };
