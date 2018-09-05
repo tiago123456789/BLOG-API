@@ -49,7 +49,7 @@ describe("Suited test CategoryBO", () => {
         try {
             const categoryReturned = await categoriaBO.findById(idFake);
         } catch(e) {
-            chai.expect(e.code).to.be.eql('NOT_FOUND');
+            chai.expect(e.name).to.be.eql('NOT_FOUND');
         }
     });
 
@@ -80,7 +80,7 @@ describe("Suited test CategoryBO", () => {
         try {
             await categoryBO.delete(idFake);            
         } catch(e) {
-            chai.expect(e.code).to.be.eq("NOT_FOUND");
+            chai.expect(e.name).to.be.eq("NOT_FOUND");
         }
     });
 
@@ -108,7 +108,7 @@ describe("Suited test CategoryBO", () => {
         try {
             await categoryBO.update(idFake, categoryFake);
         } catch(e) {
-            chai.expect(e.code).to.eq("NOT_FOUND");
+            chai.expect(e.name).to.eq("NOT_FOUND");
         }
     });
 });

@@ -65,7 +65,7 @@ describe("Suit tests ArticleBO", () => {
         try {
             await articleBO.findById(idFake);
         } catch(e) {
-            expect(e.code).to.eq("NOT_FOUND");
+            expect(e.name).to.eq("NOT_FOUND");
         }
     });
 

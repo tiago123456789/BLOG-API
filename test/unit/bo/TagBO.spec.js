@@ -50,7 +50,7 @@ describe("Suited test TagService", () => {
         try {
             await tagBo.delete(idTagFake);
         } catch (e) {
-            chai.expect(e.code).to.be.equal("NOT_FOUND");
+            chai.expect(e.name).to.be.equal("NOT_FOUND");
             chai.assert(daoFake.delete.notCalled);
         }
     });
@@ -108,7 +108,7 @@ describe("Suited test TagService", () => {
         try {
             await tagBO.update(idTagFake, tagFake);
         } catch(e) {
-            chai.expect(e.code).to.be.equal("NOT_FOUND");
+            chai.expect(e.name).to.be.equal("NOT_FOUND");
         }
     });
 
@@ -159,7 +159,7 @@ describe("Suited test TagService", () => {
         try {
             const tagReturned = await tagBO.findById(idTagFake);
         } catch(e) {
-            chai.expect(e.code).to.be.equal("NOT_FOUND");
+            chai.expect(e.name).to.be.equal("NOT_FOUND");
         }
     })
 

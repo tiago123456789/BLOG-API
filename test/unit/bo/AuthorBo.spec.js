@@ -72,7 +72,7 @@ describe("Suit tests AuthorBo", () => {
         try {
             const authorReturned = await authorBO.findById(idFake);
         } catch(e) {
-            expect(e.code).to.be.eq(CODE_EXCEPTION.NOT_FOUND);
+            expect(e.name).to.be.eq(CODE_EXCEPTION.NOT_FOUND);
         }
     });
 
@@ -100,7 +100,7 @@ describe("Suit tests AuthorBo", () => {
         try {
             await authorBO.delete(idFake);
         } catch(e) {
-            expect(e.code).to.be.eql(CODE_EXCEPTION.NOT_FOUND)
+            expect(e.name).to.be.eql(CODE_EXCEPTION.NOT_FOUND)
         }
     });
 
@@ -127,7 +127,7 @@ describe("Suit tests AuthorBo", () => {
         try {
             await authorBO.update(idFake, authorFake);
         } catch(e) {
-            expect(e.code).to.be.eql(CODE_EXCEPTION.NOT_FOUND)
+            expect(e.name).to.be.eql(CODE_EXCEPTION.NOT_FOUND)
         }
     });
 
@@ -156,7 +156,7 @@ describe("Suit tests AuthorBo", () => {
         try {
             await authorBO.save(authorFake);
         } catch(e) {
-            expect(e.code).to.be.eql(CODE_EXCEPTION.NEGOTIATION);
+            expect(e.name).to.be.eql(CODE_EXCEPTION.NEGOTIATION);
         }
     });
 });
