@@ -9,8 +9,8 @@ export default class AuthService {
 
     static DATA_INVALID = "Dados informados são inválidos!";
 
-    constructor() {
-        this._authorBo = new AuthorBO();
+    constructor(authorBO) {
+        this._authorBo = authorBO || new AuthorBO();
         this._tokenService = new TokenService();
         this.temAcesso = this.temAcesso.bind(this);
     }
@@ -49,7 +49,7 @@ export default class AuthService {
 
         const senhaEValida = await Encoder.isEqual(password, pessoa.password);
         if (!senhaEValida) {
-            throw new SecurityException(AuthService.DATA_INVALID, 403);
+            throw new SecurityException(AuthService.DATA_INVALID + "teste", 403);
         }
 
         const { email, name, id } = pessoa;
