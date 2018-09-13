@@ -88,11 +88,12 @@ describe("Suit test Authentication and Authorization", () => {
     });
 
     it("Should authenticate using refreshToken", async () => {
-        const emailFake = "teste@gmail.com";
-        const token = new Token(Token.TYPE.REFRESH);
-        token.addValuePayload(emailFake);
-        const tokenBuilder = new TokenBuiler(token);
-        const refreshToken = tokenBuilder.build();
+        const refreshToken = getRefreshToken();
+
+        const credenciaisFake = {
+            email: "teste@gmail.com",
+            password: "teste"
+        }
 
         const authorBoFake = {
             findByEmail: sinon.stub()
@@ -101,7 +102,7 @@ describe("Suit test Authentication and Authorization", () => {
         const pessoaFake = {
             id: 1,
             name: "Teste",
-            email: emailFake
+            email: "teste@gmail.com"
         };
 
         authorBoFake.findByEmail.withArgs(credenciaisFake.email).returns(pessoaFake);
@@ -109,7 +110,40 @@ describe("Suit test Authentication and Authorization", () => {
         const objectReturned = await authService.loginByRefreshToken(refreshToken);
         expect(objectReturned).to.have.property("name");
         expect(objectReturned).to.have.property("id");
-        expect(objectReturned).to.have.property("accessToken");        
-        expect(objectReturned).to.have.property("refreshToken");       
+        expect(objectReturned).to.have.property("accessToken");
+        expect(objectReturned).to.have.property("refreshToken");
     });
+
+    it("Should trigger exception if refreshToken invalid.", async () => {
+        try {
+            const authService = new AuthService();
+            const objectReturned = await authService.loginByRefreshToken("");
+        } catch (e) {
+            expect(e.name).to.be.eq("JsonWebTokenError");
+        }
+    });
+
+    it("Should trigger exception if people with email information in refreshToken not exist", async () => {
+        const refreshToken = getRefreshToken();
+        const credenciaisFake = { email: "teste@gmail.com" };
+        const authorBoFake = { findByEmail: sinon.stub() };
+
+        authorBoFake.findByEmail.withArgs(credenciaisFake.email).returns(null);
+        try {
+            const authService = new AuthService(authorBoFake);
+            const objectReturned = await authService.loginByRefreshToken(refreshToken);
+        } catch (e) {
+            expect(e.name).to.be.eq("SECURITY");
+            expect(e.status).to.be.eq(401);
+            sinon.restore();
+        }
+    });
+
+    function getRefreshToken() {
+        const emailFake = "teste@gmail.com";
+        const token = new Token(Token.TYPE.REFRESH);
+        token.addValuePayload("email", emailFake);
+        const tokenBuilder = new TokenBuiler(token);
+        return tokenBuilder.build();
+    }
 });
