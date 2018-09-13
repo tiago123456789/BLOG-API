@@ -66,7 +66,7 @@ export default class AuthService {
         const refreshTokenEValid = await this._tokenService.isValid(refreshToken);
 
         if (!refreshTokenEValid) {
-            throw new SecurityException("Datas invalids!", 401);
+            throw new SecurityException("Datas invalids!", 403);
         }
 
         const payloadToken = await this._tokenService.decode(refreshToken);
