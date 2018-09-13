@@ -44,12 +44,12 @@ export default class AuthService {
 
         const pessoa = await this._authorBo.findByEmail(emailAutenticacao);
         if (!pessoa) {
-            throw new SecurityException(AuthService.DATA_INVALID, 403);
+            throw new SecurityException(AuthService.DATA_INVALID, 401);
         }
 
         const senhaEValida = await Encoder.isEqual(password, pessoa.password);
         if (!senhaEValida) {
-            throw new SecurityException(AuthService.DATA_INVALID + "teste", 403);
+            throw new SecurityException(AuthService.DATA_INVALID + "teste", 401);
         }
 
         const { email, name, id } = pessoa;
@@ -66,14 +66,14 @@ export default class AuthService {
         const refreshTokenEValid = await this._tokenService.isValid(refreshToken);
 
         if (!refreshTokenEValid) {
-            throw new SecurityException("Datas invalids!")
+            throw new SecurityException("Datas invalids!", 401);
         }
 
         const payloadToken = await this._tokenService.decode(refreshToken);
         const author = await this._authorBo.findByEmail(payloadToken.email);
 
         if (!author) {
-            throw new SecurityException("Datas invalids!")
+            throw new SecurityException("Datas invalids!", 401);
         }
 
         const { email, name, id } = author;
