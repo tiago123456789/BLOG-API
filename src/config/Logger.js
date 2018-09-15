@@ -33,8 +33,10 @@ const logger = winston.createLogger({
     exitOnError: false
 });
 
-logger.stream = function(message) {
-    logger.info(message);
+logger.stream = {
+    write: function(message, encoding) {
+        logger.info(message);
+    }
 };
 
 export default logger;
