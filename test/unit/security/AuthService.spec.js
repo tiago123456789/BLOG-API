@@ -10,21 +10,21 @@ const expect = chai.expect;
 
 describe("Suit test Authentication and Authorization", () => {
 
-    it("Should created information authentication if exist user", async () => {
-        const credenciaisFake = {
-            email: "teste@gmail.com",
-            password: "teste"
-        }
+    const credenciaisFake = {
+        email: "teste@gmail.com",
+        password: "teste"
+    };
 
+    const authorBoFake = {
+        findByEmail: sinon.stub()
+    };
+
+    it("Should created information authentication if exist user", async () => {
         const pessoaFake = {
             id: 1,
             name: "Teste",
             email: "teste@gmail.com",
             password: await Encoder.getHash(credenciaisFake.password)
-        };
-
-        const authorBoFake = {
-            findByEmail: sinon.stub()
         };
 
         authorBoFake.findByEmail.withArgs(credenciaisFake.email).returns(pessoaFake);
@@ -39,15 +39,6 @@ describe("Suit test Authentication and Authorization", () => {
     });
 
     it("Should trigger exception if people with email not exists", async () => {
-        const credenciaisFake = {
-            email: "teste@gmail.com",
-            password: "teste"
-        }
-
-        const authorBoFake = {
-            findByEmail: sinon.stub()
-        };
-
         authorBoFake.findByEmail.withArgs(credenciaisFake.email).returns(null);
         try {
             const authService = new AuthService(authorBoFake);
@@ -60,20 +51,11 @@ describe("Suit test Authentication and Authorization", () => {
     });
 
     it("Should trigger exception if password invalid.", async () => {
-        const credenciaisFake = {
-            email: "teste@gmail.com",
-            password: "teste"
-        }
-
         const pessoaFake = {
             id: 1,
             name: "Teste",
             email: "teste@gmail.com",
             password: await Encoder.getHash(credenciaisFake.password + credenciaisFake.password)
-        };
-
-        const authorBoFake = {
-            findByEmail: sinon.stub()
         };
 
         authorBoFake.findByEmail.withArgs(credenciaisFake.email).returns(pessoaFake);
@@ -89,15 +71,6 @@ describe("Suit test Authentication and Authorization", () => {
 
     it("Should authenticate using refreshToken", async () => {
         const refreshToken = getRefreshToken();
-
-        const credenciaisFake = {
-            email: "teste@gmail.com",
-            password: "teste"
-        }
-
-        const authorBoFake = {
-            findByEmail: sinon.stub()
-        };
 
         const pessoaFake = {
             id: 1,
@@ -125,8 +98,6 @@ describe("Suit test Authentication and Authorization", () => {
 
     it("Should trigger exception if people with email information in refreshToken not exist", async () => {
         const refreshToken = getRefreshToken();
-        const credenciaisFake = { email: "teste@gmail.com" };
-        const authorBoFake = { findByEmail: sinon.stub() };
 
         authorBoFake.findByEmail.withArgs(credenciaisFake.email).returns(null);
         try {
