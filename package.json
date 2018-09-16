@@ -9,7 +9,7 @@
     "build": "babel <dirSource> -d <dirDestine>",
     "test:unit": "mocha --no-colors --opts ./test/mocha.opts ./test/unit/**/*.spec.js",
     "test:integration": "mocha --no-colors --opts ./test/mocha.opts ./test/integration/**/*.spec.js",
-    "test": "NODE_ENV=test npm run test:unit && npm run test:integration"
+    "test": "NODE_ENV=test npm run test:unit && npm run test:integration "
   },
   "keywords": [
     "blog",
