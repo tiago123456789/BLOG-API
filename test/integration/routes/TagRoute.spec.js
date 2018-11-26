@@ -3,10 +3,9 @@ import chai from "chai";
 
 import app from "./../../../src/config/Server";
 import TagService from "./../service/TagService";
-import Tag from "../../../src/routes/Tag";
 import TokenService from "../service/TokenService";
 import Token from "../../../src/security/Token";
-import { CONSTANTES } from "../../../src/config/Constantes";
+import {CONSTANTES} from "../../../src/config/Constantes";
 
 const expect = chai.expect;
 const request = supertest;
@@ -21,6 +20,23 @@ describe("Test integration route tag", () => {
 
     afterEach(() => {
         TagService.deleteAll();
+    });
+
+    it("GET /tags/:id - Status code 404", (done) => {
+
+        request(app)
+            .get(`/tags/${tagFake._id}`)
+            .set(CONSTANTES.PARAM_AUTHORIZATION, accessToken)
+            .expect(404)
+            .end(done);
+    });
+
+    it("GET /tags/:id Status code 200", async () => {
+        await TagService.create(tagFake);
+        request(app)
+            .get(`/tags/${tagFake._id}`)
+            .set(CONSTANTES.PARAM_AUTHORIZATION, accessToken)
+            .expect(200);
     });
 
     it("GET /tags", (done) => {
