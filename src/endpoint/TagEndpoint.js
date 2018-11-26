@@ -6,6 +6,7 @@ export default class TagEndpoint {
         this.save = this.save.bind(this);
         this.delete = this.delete.bind(this);
         this.update = this.update.bind(this);
+        this.findById = this.findById.bind(this);
     }
 
     async findAll(request, response, next) {
@@ -13,6 +14,16 @@ export default class TagEndpoint {
             const tags = await this._tagBO.findAll();
             response.json(tags);
         } catch (e) {
+            next(e);
+        }
+    }
+
+    async findById(request, response, next) {
+        try {
+            const id = request.params.id;
+            const tag = await this._tagBO.findById(id);
+            response.json(tag);
+        } catch(e) {
             next(e);
         }
     }
