@@ -1,5 +1,4 @@
 import AuthEndpoint from "./../endpoint/AuthEndpoint";
-import { invalidIdMongodb } from "../middleware/InvalidIdMongodb";
 
 const authEndpoint = new AuthEndpoint();
 

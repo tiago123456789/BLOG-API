@@ -2,6 +2,8 @@ import TokenService from "./TokenService";
 import AuthorBO from "./../bo/AuthorBO";
 import Encoder from "./../lib/Encoder";
 import SecurityException from "./../exception/SecurityException";
+import NegotiationException from "./../exception/NegotiationException";
+
 import TokenBuilder from "./TokenBuilder";
 import Token from "./Token";
 
@@ -39,7 +41,7 @@ export default class AuthService {
         const password = credenciais.password;
 
         if (!emailAutenticacao || !password) {
-            throw new NegotiationException("Deve ser informado email é senha.")
+            throw new NegotiationException(AuthService.DATA_INVALID)
         }
 
         const pessoa = await this._authorBo.findByEmail(emailAutenticacao);

@@ -15,7 +15,7 @@ export default (error, request, response, next) => {
         case "NEGOTIATION":
             return response.status(409).json({ msg: error.message });
         default:
-            logger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
+            logger.error(`${error.status || 500} - ${error.message} - ${request.originalUrl} - ${request.method} - ${request.ip}`);
             return response.status(500).json({ mgs: error.message });
     }
 };
