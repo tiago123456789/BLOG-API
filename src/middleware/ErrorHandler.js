@@ -7,6 +7,8 @@ export default (error, request, response, next) => {
     }
     
     switch(error.name) {
+        case "DATA_INVALID":
+            return response.status(400).json({ msg: error.message })
         case "SECURITY": 
         case 'JsonWebTokenError':
             return response.status(error.status || 403).json({ msg: error.message })
