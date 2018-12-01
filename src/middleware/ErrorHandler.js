@@ -3,7 +3,7 @@ import logger from "./../config/Logger";
 
 export default (error, request, response, next) => {
     if (error.hasOwnProperty("errors")) {
-        return response.status(400).json({ mgs: ErrorValidation.getErrorValidation(error) })
+        return response.status(400).json({ msg: ErrorValidation.getErrorValidation(error) })
     }
     
     switch(error.name) {
@@ -16,6 +16,6 @@ export default (error, request, response, next) => {
             return response.status(409).json({ msg: error.message });
         default:
             logger.error(`${error.status || 500} - ${error.message} - ${request.originalUrl} - ${request.method} - ${request.ip}`);
-            return response.status(500).json({ mgs: error.message });
+            return response.status(500).json({ msg: error.message });
     }
 };
