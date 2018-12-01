@@ -3,13 +3,12 @@ import AuthorBO from "./../bo/AuthorBO";
 import Encoder from "./../lib/Encoder";
 
 import DatasInvalidException from "./../exception/DatasInvalidException";
-import DatasInvalidException from "./../exception/DatasInvalidException";
 import SecurityException from "./../exception/SecurityException";
 import ExceptionMessage from "./../exception/ExceptionMessage";
 
 
 import TokenBuilder from "./TokenBuilder";
-import Token from "./Token";
+import Token from "./Token"; 
 
 export default class AuthService {
 
