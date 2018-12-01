@@ -1,15 +1,15 @@
 import TokenService from "./TokenService";
 import AuthorBO from "./../bo/AuthorBO";
 import Encoder from "./../lib/Encoder";
+import DatasInvalidException from "../exception/DatasInvalidException";
 import SecurityException from "./../exception/SecurityException";
-import NegotiationException from "./../exception/NegotiationException";
+import ExceptionMessage from "./../exception/ExceptionMessage";
+
 
 import TokenBuilder from "./TokenBuilder";
 import Token from "./Token";
 
 export default class AuthService {
-
-    static DATA_INVALID = "Dados informados são inválidos!";
 
     constructor(authorBO) {
         this._authorBo = authorBO || new AuthorBO();
@@ -27,7 +27,7 @@ export default class AuthService {
             const eUmTokenValido = await this._tokenService.isValid(accessToken);
             
             if (!eUmTokenValido) {
-                return next(new SecurityException("Token invalid!"));
+                return next(new SecurityException(ExceptionMessage.DATA_INVALID));
             }
             return next();    
         } catch(e) {
@@ -41,7 +41,7 @@ export default class AuthService {
         const password = credenciais.password;
 
         if (!emailAutenticacao || !password) {
-            throw new NegotiationException(AuthService.DATA_INVALID)
+            throw new DatasInvalidException();
         }
 
         const pessoa = await this._authorBo.findByEmail(emailAutenticacao);
@@ -51,7 +51,7 @@ export default class AuthService {
 
         const senhaEValida = await Encoder.isEqual(password, pessoa.password);
         if (!senhaEValida) {
-            throw new SecurityException(AuthService.DATA_INVALID + "teste", 401);
+            throw new SecurityException(AuthService.DATA_INVALID, 401);
         }
 
         const { email, name, id } = pessoa;
@@ -68,14 +68,14 @@ export default class AuthService {
         const refreshTokenEValid = await this._tokenService.isValid(refreshToken);
 
         if (!refreshTokenEValid) {
-            throw new SecurityException("Datas invalids!", 403);
+            throw new SecurityException(ExceptionMessage.DATA_INVALID, 403);
         }
 
         const payloadToken = await this._tokenService.decode(refreshToken);
         const author = await this._authorBo.findByEmail(payloadToken.email);
 
         if (!author) {
-            throw new SecurityException("Datas invalids!", 401);
+            throw new SecurityException(ExceptionMessage.DATA_INVALID, 401);
         }
 
         const { email, name, id } = author;
