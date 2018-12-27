@@ -15,7 +15,7 @@ const configurationLogger = {
       colorize: false,
     },
     console: {
-      level: 'error',
+      level: 'warning',
       handleExceptions: true,
       json: false,
       colorize: true,
