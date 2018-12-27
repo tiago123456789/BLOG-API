@@ -3,7 +3,7 @@ export default class ArticleEndpoint {
     constructor(bo) {
         this._bo = bo;
         this.findAll = this.findAll.bind(this);
-        this.findById = this.findBydId.bind(this);
+        this.findById = this.findById.bind(this);
         this.save = this.save.bind(this);
         this.delete = this.delete.bind(this);
         this.update = this.update.bind(this);
@@ -15,11 +15,11 @@ export default class ArticleEndpoint {
         response.json(articles);
     }
 
-    async findBydId(request, response, next) {
+    async findById(request, response, next) {
         try {
             const id = request.params.id;
-            const article = await this._bo.findBydId(id);
-            respons.json(article);
+            const article = await this._bo.findById(id);
+            response.json(article);
         } catch(e) {
             next(e);
         }
