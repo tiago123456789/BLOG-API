@@ -12,7 +12,7 @@ const authService = new AuthService();
 export default (router) => {
 
     router.get("", articleEndpoint.findAll);
-    router.get("/:id", invalidIdMongodb, articleEndpoint.findById);
+    router.get("/:id", authService.temAcesso, invalidIdMongodb, articleEndpoint.findById);
     router.post("", authService.temAcesso, articleEndpoint.save);
     router.delete("/:id", authService.temAcesso, invalidIdMongodb, articleEndpoint.delete);
     router.put("/:id", authService.temAcesso, invalidIdMongodb, articleEndpoint.update);
