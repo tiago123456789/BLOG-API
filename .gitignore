@@ -4,3 +4,4 @@ node_modules
 .env-test
 .env-prd
 init-app.dev.sh
+CD.pem

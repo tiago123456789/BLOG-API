@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 // Setting middleware logger http.
 app.use(morgan("combined", { stream: logger.stream }));
 app.use(cors());
+
 routesApp(app);
 
 export default app;
